@@ -117,6 +117,27 @@ class Megaroster {
     li
       .querySelector('button.move-down')
       .addEventListener('click', this.moveDown.bind(this, student))
+    
+    li
+      .querySelector('button.edit')
+      .addEventListener('click', this.editStudent.bind(this, student))
+  }
+
+  editStudent(student, ev) {
+    const btn = ev.target
+    const li = btn.closest('.student')
+    const currentStudentName = li.querySelector('.student-name')
+    if (currentStudentName.contentEditable === "true") {
+      const index = this.students.findIndex((currentStudent) => {
+        return currentStudent.id === student.id
+      })
+      this.students[index].name = currentStudentName.textContent
+      currentStudentName.style.backgroundColor = li.style.backgroundColor
+      this.save()
+    } else {
+      currentStudentName.contentEditable = 'true'
+      currentStudentName.style.backgroundColor = '#ababab'
+    }
   }
 
   moveUp(student, ev) {
@@ -162,3 +183,12 @@ class Megaroster {
   }
 }
 const roster = new Megaroster('#studentList')
+
+// repalce text with form
+// replace edit button with submit button for form
+
+
+
+// if not editable, make editablel
+// if editable, store the new value and sync it
+//  also change the background
