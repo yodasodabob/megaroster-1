@@ -1,93 +1,63 @@
 $(document).foundation()
 
-const megaroster = {
-  students: [],
-
-  init(listSelector) {
+class Megaroster {
+  constructor(listSelector) {
     this.studentList = document.querySelector(listSelector)
+    this.students = []
     this.max = 0
-    this.setupEventListeners()  
+    this.setupEventListeners()
     this.load()
-  },
+  }
 
   setupEventListeners() {
     document
       .querySelector('#new-student')
       .addEventListener('submit', this.addStudentViaForm.bind(this))
-  },
+  }
 
   save() {
     localStorage.setItem('roster', JSON.stringify(this.students))
-  },
+  }
 
   load() {
     const rosterString = localStorage.getItem('roster')
-    const rosterArray = JSON.parse(rosterString)
-    rosterArray.map(this.addStudent.bind(this))
-  },
-
-  moveElementInArray (array, value, item, positionChange) {
-    let oldIndex = value;
-    if (oldIndex > -1){
-      let newIndex = (oldIndex + positionChange);
-
-      if (newIndex < 0){
-        newIndex = 0
-      }else if (newIndex >= array.length){
-        newIndex = array.length
-      }
-      let arrayClone = array.slice();
-      arrayClone.splice(oldIndex,1);
-      arrayClone.splice(newIndex,0,item);
-
-      return arrayClone
+    if (rosterString) {
+      const rosterArray = JSON.parse(rosterString)
+      rosterArray
+        .reverse()
+        .map(this.addStudent.bind(this))
     }
-    return array
-  },
+  }
 
   removeStudent(ev) {
     const btn = ev.target
-    for (let i = 0; i < this.students.length; i++) {
-      if (this.students[i].id == btn.closest('.student').dataset.id) {
+    const li = btn.closest('.student')
+
+    for (let i=0; i < this.students.length; i++) {
+      let currentId = this.students[i].id.toString()
+      if (currentId === li.dataset.id) {
         this.students.splice(i, 1)
         break
       }
-    } 
-    btn.closest('.student').remove()
+    }
+
+    li.remove()
     this.save()
-  },
+  }
 
   promoteStudent(student, ev) {
     const btn = ev.target
     const li = btn.closest('.student')
-    li.style.backgroundColor = '#00ff00'
-    student.promoted = true
-    this.save()
-  },
+    student.promoted = !student.promoted
 
-  moveUp(ev) {
-    const btn = ev.target
-    for (let i = 0; i < this.students.length; i++) {
-      if (this.students[i].id == btn.closest('.student').dataset.id) {
-        this.students = this.moveElementInArray(this.students, i, this.students[i], -1)
-        break
-      }
+    if (student.promoted) {
+      li.classList.add('promoted')
+    } else {
+      li.classList.remove('promoted')
     }
+    
     this.save()
-    this.studentList.insertBefore(btn.closest('.student'), btn.closest('.student').previousSibling)
-  },
-
-  moveDown(ev) {
-    const btn = ev.target
-    for (let i = 0; i < this.students.length; i++) {
-      if (this.students[i].id == btn.closest('.student').dataset.id) {
-        this.students = this.moveElementInArray(this.students, i, this.students[i], 1)
-        break
-      }
-    }
-    this.save()
-    this.studentList.insertBefore(btn.closest('.student'), btn.closest('.student').nextSibling.nextSibling)
-  },
+  }
 
   addStudentViaForm(ev) {
     ev.preventDefault()
@@ -98,26 +68,23 @@ const megaroster = {
     }
     this.addStudent(student)
     f.reset()
-  },
+  }
 
   addStudent(student, append) {
+    this.students.unshift(student)
+
     const listItem = this.buildListItem(student)
-    if (append) {
-      this.students.push(student)
-      this.studentList.appendChild(listItem)
-    } else {
-      this.students.unshift(student)
-      this.prependChild(this.studentList,listItem)
-    }
+    this.prependChild(this.studentList, listItem)
+
     if (student.id > this.max) {
       this.max = student.id
     }
     this.save()
-  },
+  }
 
   prependChild(parent, child) {
     parent.insertBefore(child, parent.firstChild)
-  },
+  }
 
   buildListItem(student) {
     const template = document.querySelector('.student.template')
@@ -125,15 +92,51 @@ const megaroster = {
     this.removeClassName(li, 'template')
     li.querySelector('.student-name').textContent = student.name
     li.dataset.id = student.id
-    li.querySelector('button.remove').addEventListener('click', this.removeStudent.bind(this))
-    li.querySelector('button.promote').addEventListener('click', this.promoteStudent.bind(this, student))
-    li.querySelector('button.up').addEventListener('click', this.moveUp.bind(this))
-    li.querySelector('button.down').addEventListener('click', this.moveDown.bind(this))
+
+    if(student.promoted) {
+      li.classList.add('promoted')
+    }
+
+    this.setupActions(li, student)
     return li
-  },
+  }
+
+  setupActions(li, student) {
+    li
+      .querySelector('button.remove')
+      .addEventListener('click', this.removeStudent.bind(this))
+
+    li
+      .querySelector('button.promote')
+      .addEventListener('click', this.promoteStudent.bind(this, student))
+
+    li
+      .querySelector('button.move-up')
+      .addEventListener('click', this.moveUp.bind(this, student))
+
+  }
+
+  moveUp(student, ev) {
+    const btn = ev.target
+    const li = btn.closest('.student')
+
+    const index = this.students.findIndex((currentStudent, i) => {
+      return currentStudent.id === student.id
+    })
+
+    if (index > 0) {
+      this.studentList.insertBefore(li, li.previousElementSibling)
+
+      const previousStudent = this.students[index - 1]
+      this.students[index - 1] = student
+      this.students[index] = previousStudent
+
+      this.save()
+    }
+  }
 
   removeClassName(el, className){
     el.className = el.className.replace(className, '').trim()
   }
 }
-megaroster.init('#studentList')
+const roster = new Megaroster('#studentList')

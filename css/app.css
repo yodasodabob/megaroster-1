@@ -8,16 +8,27 @@
   height: 4rem;
 }
 
+.student + .student {
+  border-top: none;
+}
+
 span.student-name {
   line-height: 40px;
   white-space: nowrap;
 }
 
-.student + .student {
-  border-top: none;
-}
-
 .actions {
   float: right;
   margin-bottom: 0;
+}
+
+.promoted {
+  background-color: #FFA807;
+  border-color: #FFC656;
+}
+
+.student:first-child button.move-up {
+  background-color: #ddd;
+  color: #eee;
+  cursor: not-allowed;
 }
