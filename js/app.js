@@ -93,15 +93,19 @@ const megaroster = {
       id: this.max + 1,
      name: f.studentName.value,
     }
+    this.addStudent(student)
     f.reset()
-
   },
 
-  addStudent(student) {
-    this.students.unshift(student)
-
+  addStudent(student, append) {
     const listItem = this.buildListItem(student)
-    this.prependChild(this.studentList, listItem)
+    if (append) {
+      this.students.push(student)
+      this.studentList.append(child(listItem))
+    } else {
+      this.students.unshift(student)
+      this.prependChild(this.studentList,listItem0)
+    }
     if (student.id > this.max) {
       this.max = student.id
     }
