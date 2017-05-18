@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="C:\Users\Laurence\xternBootcamp\megaroster-1\css\font-awesome.css">
     <link rel="stylesheet" href="css/app.css">
   </head>
   <body>
@@ -14,7 +15,7 @@
       <div class="medium-offset-2 medium-8 columns">
         <h2>Megaroster</h2>
         <form id="new-student">
-          <div class="small-9 columns">
+          <div class="input-group">
             <input
               type="text"
               name="studentName"
@@ -22,21 +23,21 @@
               autofocus
               required
             >
+          <div class="input-group-button">
+            <button type="submit" class="button expanded success">Add Student</button>
           </div>
-          <div class="small-3 columns">
-            <button type="submit" class="button expanded">Add Student</button>
           </div>
         </form>
       </div>
 
       <div class="row">
         <div class="medium-offset-2 medium-8 columns">
-          <ul id="studentList">
-            <li class="student template">
+          <ul class="no-bullet" id="studentList">
+            <li class="student template clearfix">
               <span class="student-name"></span>
               <span class="actions expanded button-group">
-                <button type="button" class="remove button alert">Remove</button>
-                <button type="button" class="promote button success">Promote</button>
+                <button type="button" class="remove button alert"><i class="fa fa-trash-o"></i></button>
+                <button type="button" class="promote button warning"><i class="fa fa-star-o"></i></button>
                 <button type="button" class="up button secondary">Up</button>
                 <button type="button" class="down button secondary">Down</button>
               </span>

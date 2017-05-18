@@ -22,7 +22,7 @@ const megaroster = {
 
   load() {
     const rosterString = localStorage.getItem('roster')
-    const rosterArray = JSON.stringify(rosterString)
+    const rosterArray = JSON.parse(rosterString)
     rosterArray.map(this.addStudent.bind(this))
   },
 
@@ -101,10 +101,10 @@ const megaroster = {
     const listItem = this.buildListItem(student)
     if (append) {
       this.students.push(student)
-      this.studentList.append(child(listItem))
+      this.studentList.appendChild(listItem)
     } else {
       this.students.unshift(student)
-      this.prependChild(this.studentList,listItem0)
+      this.prependChild(this.studentList,listItem)
     }
     if (student.id > this.max) {
       this.max = student.id
@@ -134,4 +134,3 @@ const megaroster = {
   }
 }
 megaroster.init('#studentList')
-// for moving items in list clone the thing and insert it before the child above it
