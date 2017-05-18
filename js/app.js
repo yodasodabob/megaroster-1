@@ -57,9 +57,12 @@ const megaroster = {
     this.save()
   },
 
-  promoteStudent(ev) {
+  promoteStudent(student, ev) {
     const btn = ev.target
-    btn.closest('.student').style.backgroundColor = '#00ff00'
+    const li = btn.closest('.student')
+    li.style.backgroundColor = '#00ff00'
+    student.promoted = true
+    this.save()
   },
 
   moveUp(ev) {
@@ -91,7 +94,7 @@ const megaroster = {
     const f = ev.target
     const student = {
       id: this.max + 1,
-     name: f.studentName.value,
+      name: f.studentName.value,
     }
     this.addStudent(student)
     f.reset()
@@ -123,7 +126,7 @@ const megaroster = {
     li.querySelector('.student-name').textContent = student.name
     li.dataset.id = student.id
     li.querySelector('button.remove').addEventListener('click', this.removeStudent.bind(this))
-    li.querySelector('button.promote').addEventListener('click', this.promoteStudent.bind(this))
+    li.querySelector('button.promote').addEventListener('click', this.promoteStudent.bind(this, student))
     li.querySelector('button.up').addEventListener('click', this.moveUp.bind(this))
     li.querySelector('button.down').addEventListener('click', this.moveDown.bind(this))
     return li
