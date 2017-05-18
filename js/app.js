@@ -17,11 +17,20 @@ const megaroster = {
 
   removeStudent(ev) {
     const btn = ev.target
+    for (let i = 0; i < this.students.length; i++) {
+      console.log(this.students[i].id, btn.closest('.student').dataset.id)
+      if (this.students[i].id == btn.closest('.student').dataset.id) {
+        this.students.splice(i, 1)
+        break
+      }
+    } 
     btn.closest('.student').remove()
-
-    // Remove it from the this.students array
-    // this.students.splice(?, 1)
   },
+
+promotestudent(ev) {
+  const btn = ev.target
+  btn.closest('.student').style.backgroundColor = #00ff00
+},
 
   addStudent(ev) {
     ev.preventDefault()
@@ -34,7 +43,6 @@ const megaroster = {
 
     const listItem = this.buildListItem(student)
     this.prependChild(this.studentList, listItem)
-
     this.max ++
     f.reset()
   },
@@ -49,10 +57,8 @@ const megaroster = {
     this.removeClassName(li, 'template')
     li.querySelector('.student-name').textContent = student.name
     li.dataset.id = student.id
-
-    li
-      .querySelector('button.remove')
-      .addEventListener('click', this.removeStudent.bind(this))
+    li.querySelector('button.remove').addEventListener('click', this.removeStudent.bind(this))
+    li.querySelector('button.promote').addEventListener('click', this.promoteStudent.bind(this))
     return li
   },
 
@@ -61,3 +67,4 @@ const megaroster = {
   }
 }
 megaroster.init('#studentList')
+// for moving items in list clone the thing and insert it before the child above it
