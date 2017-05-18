@@ -15,6 +15,10 @@ const megaroster = {
       .addEventListener('submit', this.addStudent.bind(this))
   },
 
+  save() {
+    localStorage.setItem('roster', JSON.stringify(this.students))
+  },
+
   moveElementInArray (array, value, item, positionChange) {
     let oldIndex = value;
     if (oldIndex > -1){
@@ -43,6 +47,7 @@ const megaroster = {
       }
     } 
     btn.closest('.student').remove()
+    this.save()
   },
 
   promoteStudent(ev) {
@@ -58,6 +63,7 @@ const megaroster = {
         break
       }
     }
+    this.save()
     this.studentList.insertBefore(btn.closest('.student'), btn.closest('.student').previousSibling)
   },
 
@@ -69,6 +75,7 @@ const megaroster = {
         break
       }
     }
+    this.save()
     this.studentList.insertBefore(btn.closest('.student'), btn.closest('.student').nextSibling.nextSibling)
   },
 
@@ -80,6 +87,7 @@ const megaroster = {
       name: f.studentName.value,
     }
     this.students.unshift(student)
+    this.save()
 
     const listItem = this.buildListItem(student)
     this.prependChild(this.studentList, listItem)
