@@ -17,7 +17,6 @@ const megaroster = {
 
   moveElementInArray (array, value, item, positionChange) {
     let oldIndex = value;
-    console.log(oldIndex)
     if (oldIndex > -1){
       let newIndex = (oldIndex + positionChange);
 
@@ -26,7 +25,6 @@ const megaroster = {
       }else if (newIndex >= array.length){
         newIndex = array.length
       }
-      console.log(newIndex)
       let arrayClone = array.slice();
       arrayClone.splice(oldIndex,1);
       arrayClone.splice(newIndex,0,item);
@@ -60,7 +58,6 @@ const megaroster = {
         break
       }
     }
-    console.log(this)
     this.studentList.insertBefore(btn.closest('.student'), btn.closest('.student').previousSibling)
   },
 
@@ -72,7 +69,6 @@ const megaroster = {
         break
       }
     }
-    console.log(this)
     this.studentList.insertBefore(btn.closest('.student'), btn.closest('.student').nextSibling.nextSibling)
   },
 
