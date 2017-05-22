@@ -133,6 +133,7 @@ class Megaroster {
       })
       this.students[index].name = currentStudentName.textContent
       currentStudentName.style.backgroundColor = li.style.backgroundColor
+      currentStudentName.contentEditable = 'false'
       this.save()
     } else {
       currentStudentName.contentEditable = 'true'
