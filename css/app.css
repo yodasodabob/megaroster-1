@@ -20,9 +20,13 @@ h2 {
   border-top: none;
 }
 
-span.student-name {
+.student-name {
+  float: left;
   line-height: 40px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
+  width: calc(100% - 195px);
   
 }
 

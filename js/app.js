@@ -123,6 +123,17 @@ class Megaroster {
       .addEventListener('click', this.editStudent.bind(this, student))
   }
 
+  saveOnEnter(ev) {
+    if (ev.keyCode === 13) {
+      ev.preventDefault()
+      ev.target.blur()
+    }
+  }
+
+  updateName(student, ev) {
+    student.name = ev.target
+  }
+
   editStudent(student, ev) {
     const btn = ev.target
     const li = btn.closest('.student')
